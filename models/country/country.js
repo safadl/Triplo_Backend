@@ -3,9 +3,8 @@ const Country = mongoose.model('Country',
 new mongoose.Schema({
   countryName:String,
   countryDescription:String,
-  CountryImage:{
-      data:Buffer,
-      contentType:String
+  countryImage:{
+      type:String
   },
   cities:[
       {

@@ -1,27 +1,23 @@
 const Country=require('../models/country/country');
 const City=require('../models/country/city');
+const countryRouter = require('../routes/countryRouter');
 
-// exports.addCountry=(req,res)=>{
-//     const country=new Country({
-//         countryName:req.body.countryName,
-//         countryDescription:req.body.countryDescription,
 
-//     })
-//     country.save((err, country) => {
-//         if (err) {
-//           res.status(500).send({ message: err });
-//           return;
-//         }
-//         res.json(country)
-//     })
-// }
+
 module.exports={
+    
     addCountry:async(req,res)=>{
+        let countryImg;
+        if(req.file){
+            countryImg=req.file.path
+        }
         const country=await Country.create({
             countryName:req.body.countryName,
             countryDescription:req.body.countryDescription,
+            countryImage:countryImg
 
         });
+
         
         await country.save().then(country=>res.json(country))
         .catch(err=>console.log(err));
@@ -34,29 +30,71 @@ module.exports={
 
 
     },
-    addCity:async(req,res)=>{
-    const city=await City.create({
-        cityName:req.body.cityName,
-        country:req.body.countryId
+    updateCountry:async(req,res)=>{
+        let countryImg;
     
+        if(req.file){
+            countryImg=req.file.path
+        }
+  
+        Country.findByIdAndUpdate(req.params.country_id, {
+            countryName:req.body.countryName,
+            countryDescription:req.body.countryDescription,
+           countryImage:countryImg,
+        },{new: true})
+        .then(country => {
+            if(!country) {
+                return res.status(404).send({
+                    message: "Country not found with id " + req.params.country_id
+                });
+            }
+            res.send(country);
+        }).catch(err => {
+            if(err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Country not found with id " + req.params.country
+                });                
+            }
+            return res.status(500).send({
+                message: "Error updating country with id " + req.params.country
+            });
+        });
+    },
+    deleteCountry:async(req,res)=>{
+        Country.findByIdAndDelete(req.params.country_id)
+        .then(country => {
+            if(!country) {
+                return res.status(404).send({
+                    message: "Country not found with id " + req.params.country_id
+                });
+            }
+            res.send({message: "Country deleted successfully!",country});
+        
     })
-//const country=await Country.findById(req.params.countryid)
-//console.log("country id"+req.params.countryid)
+    .catch(
+        err=>{
+            return res.status(500).send({
+                message: "Error deleting country with id " + req.params.country
+            });
+        }
+    )
+    },
+  
+    deleteAllCountries:async(req,res)=>{
+        
+       
+        Country.deleteMany()
+        .then(()=>{
+          
+            res.send({message:"All countries deleted successfully!"})
+        }
+            
+            )
+            .catch(err=>{console.log(err)})
 
-    
+        
+    }
+   
 
-    await city.save().then(city=>res.json(city))
-        .catch(err=>console.log(err));
-        //  country.cities.push(city)
-
-},
-assignCity:async(req,res)=>{
-    const city=await City.findById(req.params.cityid)
-    const country=await Country.findById(req.params.countryid)
-    country.cities.push(city)
-     country.populate('cities')
-    country.save();
-    res.json(country)
-}
 
 }

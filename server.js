@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser= require('body-parser');
 const cors= require('cors');
 const app = express();
+var multer=require('multer');
+
 const dbConfig = require("./config/db.config"); 
 
 var corsOptions={
@@ -9,15 +11,22 @@ var corsOptions={
 };
 
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.json());
+app.use(express.urlencoded())
 
-app.use(bodyParser.json());
+// app.use(express.urlencoded({extended: true}));
+// app.use(multer().single())
+
+app.use('/uploads',express.static('uploads'))
+
+
 app.get('/',(req,res)=>{
     res.json({message:"Welcome to Triplo"});
 });
 // routes
 require('./routes/auth.routes')(app);
 require('./routes/countryRouter')(app);
+require('./routes/cityRouter')(app);
 
 require('./routes/user.routes')(app);
 const PORT= process.env.PORT || 8000;app.listen(PORT,()=>{
@@ -30,7 +39,9 @@ const Role = db.role;
 db.mongoose
   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify:false,
+    useCreateIndex:true
   })
   .then(() => {
     console.log("Successfully connect to MongoDB.");
