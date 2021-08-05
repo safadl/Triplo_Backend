@@ -27,6 +27,7 @@ app.get('/',(req,res)=>{
 require('./routes/auth.routes')(app);
 require('./routes/countryRouter')(app);
 require('./routes/cityRouter')(app);
+require('./routes/restoRouter')(app);
 
 require('./routes/user.routes')(app);
 const PORT= process.env.PORT || 8000;app.listen(PORT,()=>{

@@ -68,13 +68,13 @@ module.exports={
                     message: "Country not found with id " + req.params.country_id
                 });
             }
-            res.send({message: "Country deleted successfully!",country});
+            res.send({message: "Country deleted successfully!",country_id});
         
     })
     .catch(
         err=>{
             return res.status(500).send({
-                message: "Error deleting country with id " + req.params.country
+                message: "Error deleting country with id " + req.params.country_id
             });
         }
     )
