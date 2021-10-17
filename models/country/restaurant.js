@@ -8,7 +8,9 @@ new mongoose.Schema({
     restoName:{type:String, uniqueCaseInsensitive: true},
     city: { type: mongoose.Schema.Types.ObjectId, ref: 'City' },
     restoImage:{type:String},
-    locationResto:GeoSchema
+    locationResto:GeoSchema,
+    loca:{type:String},
+    cityName:{type:String},
 
 
 }).plugin(uniqueValidator, { type: 'mongoose-unique-validator' })

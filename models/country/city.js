@@ -7,6 +7,8 @@ const City=mongoose.model(
 new mongoose.Schema({
     cityName:{type:String, uniqueCaseInsensitive: true},
     country: { type: mongoose.Schema.Types.ObjectId, ref: 'Country' },
+    countryName:{type:String, uniqueCaseInsensitive: true},
+
     cityDescription:String,
     cityImage:{type:String},
     restos:[

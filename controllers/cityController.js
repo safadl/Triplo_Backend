@@ -12,6 +12,8 @@ module.exports={
         const city=await City.create({
             cityName:req.body.cityName,
             country:req.body.countryId,
+            countryName:req.body.countryName,
+
             cityDescription:req.body.cityDescription,
             cityImage:cityImg
         
@@ -61,6 +63,7 @@ module.exports={
         City.findByIdAndUpdate(req.params.city_id, {
             cityName:req.body.cityName,
             country:req.body.countryId,
+            countryName:req.body.countryName,
             cityDescription:req.body.cityDescription,
             cityImage:cityImg
         
