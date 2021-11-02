@@ -10,17 +10,20 @@ module.exports={
         }
   
         const hotel=await Hotel.create({
-            hotelName:req.body.HotelName,
-            city:req.body.cityId,
+            hotelName:req.body.hotelName,
+            // city:req.body.cityId,
+            cityName:req.body.cityName,
             hotelImage:hotelImg,
-            hotelDescription:hotelDescription
+            hotelDescription:req.body.hotelDescription,
+            reviews:req.body.reviews,
+            locationHotel:req.body.locationHotel
         
         })
 
-        await hotel.save(   
-        )   
+        await hotel.save()
         
         .then(hotel=>res.json(hotel))
+        .then(console.log(" NEW HOTEL : "+hotel.toString()))
             .catch(err=>
               { 
                 console.log(err)
@@ -28,13 +31,6 @@ module.exports={
                 )
         
       
-            
-            // catch(e){
-            //     console.log(e);
-            //     next(err);
-            //     res.status(422).send({ 'message': 'Validation error' });
-
-            // }
     },
     assignHotel:async(req,res)=>{
         const hotel=await Hotel.findById(req.params.hotelid)
@@ -107,7 +103,6 @@ module.exports={
   
     deleteAllHotels:async(req,res)=>{
         
-       
         Hotel.deleteMany()
         .then(()=>{
           

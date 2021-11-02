@@ -11,6 +11,8 @@ new mongoose.Schema({
     locationResto:GeoSchema,
     loca:{type:String},
     cityName:{type:String},
+    rating:{type:Number},
+    restoDetails:{type:String},
 
 
 }).plugin(uniqueValidator, { type: 'mongoose-unique-validator' })

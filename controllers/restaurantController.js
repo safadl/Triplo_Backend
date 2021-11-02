@@ -1,5 +1,4 @@
 const Restaurant = require("../models/country/restaurant");
-
 module.exports = {
   addResto: async (req, res) => {
     let restoImg;
@@ -13,6 +12,10 @@ module.exports = {
       cityName: req.body.CityName,
       restoImage: restoImg,
       loca: req.body.restoLoc,
+      rating: req.body.rating,
+      restoDetails:req.body.details,
+      
+
     });
 
     await resto
